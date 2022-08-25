@@ -3,11 +3,14 @@ package org.irbis.parser.service;
 import lombok.RequiredArgsConstructor;
 import org.irbis.parser.model.Article;
 import org.irbis.parser.model.Author;
+import org.irbis.parser.model.Comment;
 import org.irbis.parser.repository.ArticleRepository;
 import org.irbis.parser.repository.AuthorRepository;
+import org.irbis.parser.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +21,11 @@ public class Storage {
     private final ArticleRepository articleRepository;
     private final AuthorRepository authorRepository;
 
+    private final CommentRepository commentRepository;
+
     @Transactional
-    public void save(List<Article> articles) {
-        for (Article article : articles) {
+    public void save(HashMap<Article, List<Comment>> articles) {
+        for (Article article : articles.keySet()) {
             Optional<Author> authorOptional = authorRepository.findByName(article.getAuthor().getName());
             Author author = authorOptional.isEmpty()
                     ? authorRepository.save(article.getAuthor())
@@ -30,6 +35,10 @@ public class Storage {
             if(articleOptional.isEmpty()) {
                 article.setAuthor(author);
                 articleRepository.save(article);
+            }
+
+            for (Comment comment: articles.get(article)) {
+                Comment commentOptional = commentRepository.findByArticle(article);
             }
         }
     }
