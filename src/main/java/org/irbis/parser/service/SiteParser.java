@@ -50,10 +50,11 @@ public class SiteParser {
         var comments = document.select(".comment-item");
 
         for (var comment: comments) {
-            String author = comment.select("name").text();
+            String author = comment.select(".name").textNodes().get(0).toString();
             String text = comment.select("p").text();
+            Integer number = Integer.parseInt(comment.select(".number").text());
 
-            commentsList.add(new Comment(article, new Author(author), text));
+            commentsList.add(new Comment(article, number, new Author(author), text));
         }
         return commentsList;
     }

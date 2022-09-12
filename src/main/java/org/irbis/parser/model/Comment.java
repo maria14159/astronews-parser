@@ -26,9 +26,12 @@ public class Comment {
 
     private String text;
 
-    public Comment(Article article, Author author, String text) {
+    private Integer number;
+
+    public Comment(Article article, Integer number, Author author, String text) {
         this.article = article;
         this.author = author;
         this.text = text;
+        this.number = number;
     }
 }
