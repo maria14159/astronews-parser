@@ -24,6 +24,7 @@ public class Comment {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @Column(columnDefinition="text")
     private String text;
 
     private Integer number;

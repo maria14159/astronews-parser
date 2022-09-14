@@ -26,42 +26,27 @@ public class Storage {
     private final CommentRepository commentRepository;
 
 //    @Transactional
-//    public void save(HashMap<Article, List<Comment>> articles) {
-//        for (Map.Entry<Article, List<Comment>> entry : articles.entrySet()) {
-//            Article article = entry.getKey();
-//            List<Comment> comments = entry.getValue();
+//    public void save(Article article, List<Comment> comments) {
 //
-//            Optional<Author> authorOptional = authorRepository.findByName(article.getAuthor().getName());
-//            Author author = authorOptional.isEmpty()
-//                    ? authorRepository.save(article.getAuthor())
-//                    : authorOptional.get();
+//        Author ArticleAuthor = saveAuthor(article.getAuthor());
 //
-//            Optional<Article> articleOptional = articleRepository.findByAuthorAndTitle(author, article.getTitle());
-//            if(articleOptional.isEmpty()) {
-//                article.setAuthor(author);
-//                articleRepository.save(article);
-//            }
+//        Article articleInBase = saveArticle(article, ArticleAuthor);
 //
-//            for (Comment comment: comments) {
+//        for (Comment comment : comments) {
 //
-//                Optional<Author> optionalAuthor = authorRepository.findByName(comment.getAuthor().getName());
+//            Author commentAuthor = saveAuthor(comment.getAuthor());
 //
-//                Author commentAuthor =  optionalAuthor.isEmpty()
-//                        ? authorRepository.save(comment.getAuthor())
-//                        : authorOptional.get();
+//            Optional<Comment> commentOptional = commentRepository.findByArticleAndNumber(articleInBase, comment.getNumber());
 //
-//                Article articleInBase = articleOptional.get();
-//                Optional<Comment> commentOptional = commentRepository.findByArticleAndNumber(articleInBase, comment.getNumber());
-//
-//                if (commentOptional.isEmpty()){
-//                    comment.setAuthor(commentAuthor);
-//                    comment.setArticle(articleInBase);
-//                    commentRepository.save(comment);
-//                }
+//            if (commentOptional.isEmpty()) {
+//                comment.setAuthor(commentAuthor);
+//                comment.setArticle(articleInBase);
+//                commentRepository.save(comment);
 //            }
 //        }
 //    }
 
+    @Transactional
     public void save(HashMap<Article, List<Comment>> articles) {
         for (Map.Entry<Article, List<Comment>> entry : articles.entrySet()) {
             Article article = entry.getKey();
@@ -85,7 +70,7 @@ public class Storage {
             }
         }
     }
-    @Transactional
+
     public Author saveAuthor(Author author){
         Optional<Author> authorOptional = authorRepository.findByName(author.getName());
         return authorOptional.isEmpty()
@@ -93,7 +78,7 @@ public class Storage {
                 : authorOptional.get();
     }
 
-    @Transactional
+
     public Article saveArticle(Article article, Author author) {
         Optional<Article> articleOptional = articleRepository.findByAuthorAndTitle(author, article.getTitle());
         if(articleOptional.isEmpty()) {
@@ -104,58 +89,5 @@ public class Storage {
             return articleOptional.get();
         }
     }
-
-//    public void save(HashMap<Article, List<Comment>> articles) {
-//        saveArticles(articles);
-//        saveComments(articles);
-//    }
-//
-//    @Transactional
-//    public void saveArticles(HashMap<Article, List<Comment>> articles) {
-//        for (Map.Entry<Article, List<Comment>> entry : articles.entrySet()) {
-//
-//            Article article = entry.getKey();
-//
-//            Optional<Author> authorOptional = authorRepository.findByName(article.getAuthor().getName());
-//            Author author = authorOptional.isEmpty()
-//                    ? authorRepository.save(article.getAuthor())
-//                    : authorOptional.get();
-//
-//            Optional<Article> articleOptional = articleRepository.findByAuthorAndTitle(author, article.getTitle());
-//            if (articleOptional.isEmpty()) {
-//                article.setAuthor(author);
-//                articleRepository.save(article);
-//            }
-//
-//        }
-//    }
-//
-//    @Transactional
-//    public void saveComments(HashMap<Article, List<Comment>> articles) {
-//        for (Map.Entry<Article, List<Comment>> entry : articles.entrySet()) {
-//            Article article = entry.getKey();
-//            List<Comment> comments = entry.getValue();
-//
-//            Author ArticleAuthorInBase = authorRepository.findByName(article.getAuthor().getName()).get();
-//            Article articleInBase = articleRepository.findByAuthorAndTitle(ArticleAuthorInBase, article.getTitle()).get();
-//
-//            for (Comment comment : comments) {
-//
-//                Optional<Author> optionalCommentAuthor = authorRepository.findByName(comment.getAuthor().getName());
-//
-//                Author commentAuthor = optionalCommentAuthor.isEmpty()
-//                        ? authorRepository.save(comment.getAuthor())
-//                        : optionalCommentAuthor.get();
-//
-//                Optional<Comment> commentOptional = commentRepository.findByArticleAndNumber(articleInBase, comment.getNumber());
-//
-//                if (commentOptional.isEmpty()) {
-//                    comment.setAuthor(commentAuthor);
-//                    comment.setArticle(articleInBase);
-//                    commentRepository.save(comment);
-//                }
-//            }
-//        }
-//    }
 
 }

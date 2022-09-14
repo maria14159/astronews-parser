@@ -17,9 +17,10 @@ public class Article {
     private Long id;
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
+    @Column(columnDefinition="text")
     private String text;
     private Integer views;
     private Integer commentsCount;

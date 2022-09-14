@@ -50,6 +50,24 @@ public class LearnJavaParserApplication implements CommandLineRunner {
 
         List<String> articleLinks = parser.parseMain(response, siteUrl);
 
+//        List<Runnable> tasks = new ArrayList<>();
+//        for (String url : articleLinks) {
+//            tasks.add(() -> {
+//                log.info("start work with {}", url);
+//                String load = loader.load(url);
+//                Article article = parser.parseArticle(load);
+//                List<Comment> comments = parser.parseComments(load, article);
+//                storage.save(article, comments);
+////                articles.put(article, comments);
+//                log.info("save from {} done", url);
+//            });
+//        }
+//
+//        tasks.forEach(executorService::submit);
+//
+//        executorService.shutdown();
+
+
         for (String articleLink: articleLinks) {
             String response1 = loader.load(articleLink);
             Article article = parser.parseArticle(response1);
@@ -58,6 +76,6 @@ public class LearnJavaParserApplication implements CommandLineRunner {
         }
 
         storage.save(articles);
-
+System.exit(0);
     }
 }
